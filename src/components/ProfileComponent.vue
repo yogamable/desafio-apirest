@@ -1,15 +1,15 @@
 <template>
-    <div>
+    <div class="h-100 row">
         <div>
-            <img :src="usuario.picture.medium" class="img-thumbnail" />
-            <h1 :id="nombre" >{{ usuario.name.first }} {{ usuario.name.last }}</h1>
+            <img :src="usuario.picture.large" class="img-thumbnail" />
+            <h1 class="fs-4" :id="nombre" >{{ usuario.name.first }} {{ usuario.name.last }}</h1>
         </div>
         <form @submit.prevent="enviarMensaje">
             <input type="color" class="form-control form-control-color mt-2 w-100" id="exampleColorInput" v-model="colorElegido">
     
             <textarea v-model="mensajeUsuario" class="form-control mt-2" rows="3"></textarea>
     
-            <button class="btn btn-light mt-2" :type="submit" >Enviar</button>       
+            <button class="btn btn-light mt-2 border shadow" :type="submit" >Enviar</button>       
         </form>
     </div>
 </template>
@@ -41,7 +41,9 @@ export default {
 
             console.log(this.enviarMensaje);
         },
-    }
+
+        
+    }   
 }
 
 </script>

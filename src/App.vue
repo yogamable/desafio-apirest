@@ -8,7 +8,7 @@
 
     </div>
     
-    <div data-bs-spy="scroll" class="col" :style="{backgroundColor: chatBg}">
+    <div data-bs-spy="scroll" class="col rounded-4" :style="{backgroundColor: chatBg}">
       <div class="row d-block">
         <ChatComponent 
         :mensajes="chatMensajes"
@@ -61,18 +61,18 @@ export default {
   methods: {
     recibirMensaje(mensaje, posicionUsuario){
 
-      this.chatMensajes.push(mensaje);
+      //this.chatMensajes.push(mensaje);
       let posicion = posicionUsuario === 0 ? 0 : 1 ;
       
       let nuevoMensaje = {
         nombre: this.usuarios[posicion].name.first,
-        colorElegido: "#fffff",
-        mensajeUsuario: this.mensaje,
+        colorElegido: mensaje.colorElegido || "#fffff",
+        mensajeUsuario: mensaje.mensajeUsuario,
         posicionUsuario: posicion,
       }
       this.chatMensajes.push(nuevoMensaje);
 
-    }
+    },
 
   },
 
