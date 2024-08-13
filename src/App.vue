@@ -1,36 +1,31 @@
 <template>
-  <div class="p-5 row">
+  <div id="app" class="d-flex p-5 row">
+    <div class="col d-block">
+      <ProfileComponent v-if="usuarios.length"
+      :usuario="usuarios[0]"
+      @enviarMensaje="recibirMensaje($event,0)"
+      />
+
+    </div>
     
-    <div class="col d-block">
-      <div v-for="(usuario, index) in usuarios" :key="index">
-        <img :src="usuario.picture.medium" class="img-thumbnail" />
-        <h1>{{ usuario.name }}</h1>
+    <div data-bs-spy="scroll" class="col" :style="{backgroundColor: chatBg}">
+      <div class="row d-block">
+        <ChatComponent 
+        :mensajes="chatMensajes"
+        />
+        
       </div>
 
-      <input type="color" class="form-control form-control-color mt-2" id="exampleColorInput" value="#563d7c" title="Choose your color" v-model="colorElegido">
-
-      <textarea v-model="mensaje" class="form-control mt-2" rows="3"></textarea>
-
-      <button type="button" class="btn btn-light mt-2" @click="enviarMensaje" >Enviar</button>       
     </div>
 
-    <div class="col d-block" :style="{backgroundColor: chatBg}">
-      <h2>{{usuario.name }}</h2>
-      <div v-for="(mensaje, index) in mensajes" :key="index" >
-        <p>{{ mensaje }}</p>
+    <div class="col d-flex">
+      <ProfileComponent v-if="usuarios.length"
+      :usuario="usuarios[1]"
+      @enviarMensaje="recibirMensaje($event,1)"
+      />
 
-      </div>
-    </div> 
-
-    <div class="col d-block">
-      <div v-for="(usuario, index) in usuarios" :key="index">
-        <img src="usuario.picture.medium" class="img-thumbnail" alt="...">
-      </div>
-      <h1>{{ name }}</h1>
-      <input type="color" class="form-control form-control-color mt-2" id="exampleColorInput" value="#563d7c" title="Choose your color">
-      <textarea class="form-control mt-2" id="exampleFormControlTextarea1" rows="3"></textarea>
-      <button type="button" class="btn btn-light mt-2">Enviar</button>       
     </div>
+    
    
   </div>
   
@@ -38,29 +33,45 @@
 
 <script>
 import axios from 'axios';
+import ProfileComponent from './components/ProfileComponent.vue';
+import ChatComponent from './components/ChatComponent.vue';
 
 export default {
   name: 'App',
   data(){
     return {
       usuarios: [],
-      usuario: "",
-      colorElegido: "",
-      mensaje: "",
-      mensajeUsuario: "",
+      chatMensajes: [],
       chatBg: "#E6D3A6",
+      posicionUsuarios: [],
+      textAlign: 'right',
     }
   },
-  methods: {
-    async mounted(){
-      const url = 'https://randomuser.me/api?results=100';
-      const { data } = await axios.get(url);
-      this.usuarios = data.results;
-      console.log(data.results);
+  async mounted(){
+    const url = 'https://randomuser.me/api?results=2';
+    const { data } = await axios.get(url);
+    this.usuarios = data.results;
+    console.log(this.usuarios);
+  },
+  components: {
+    ProfileComponent,
+    ChatComponent,
     
-    },
-    enviarMensaje(){
+  },
+  methods: {
+    recibirMensaje(mensaje, posicionUsuario){
+
+      this.chatMensajes.push(mensaje);
+      let posicion = posicionUsuario === 0 ? 0 : 1 ;
       
+      let nuevoMensaje = {
+        nombre: this.usuarios[posicion].name.first,
+        colorElegido: "#fffff",
+        mensajeUsuario: this.mensaje,
+        posicionUsuario: posicion,
+      }
+      this.chatMensajes.push(nuevoMensaje);
+
     }
 
   },
